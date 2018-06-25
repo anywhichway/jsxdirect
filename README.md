@@ -53,7 +53,7 @@ preact.render(jsx.compile({env:"preact"},"function() { return(<div>Pretty cool, 
 </html>
 ```
 
-Or, as you can see above, wrap JSX in `jsx(<jsx string>)` and pass it directly to a VDOM consumer.
+Or, as you can see above, wrap JSX in `jsx(<jsx string>,<options>)` and pass it directly to a VDOM consumer.
 
 Or, compile functions containing JSX using `jsx.compile(<options>,<function definition string>)`, and pass the result of invoking them to a VDOM consumer.
 
