@@ -50,11 +50,11 @@ preact.render(jsx.compile({env:"preact"},
 		"function() { return(<div>Pretty cool, huh?</div>) }")(),document.getElementById("cool"));
 	
 const compiled = jsx.compile({env:"preact"},
-		"function() { return jsx('<div>'+document.getElementById('directions').innerHTML+'</div>') }");
+		"function() { return jsx(document.getElementById('directions').innerHTML) }");
 
 document.getElementById("compiled").innerText = compiled+"";
 
-document.getElementById("vdom").innerText = JSON.stringify(compiled());
+document.getElementById("vdom").innerText = JSON.stringify({nodeName:"div",attributes:{},children:compiled()});
 
 </script>
 
