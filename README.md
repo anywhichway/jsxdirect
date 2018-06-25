@@ -9,7 +9,7 @@ A browser based JSX transpiler supporting entire script blocks, functions, and s
 3) Define your functions in script blocks of type "text/jsx".
 4) Compile your script blocks using `jsx.compile` and pass in the variable name associated with the object supporting "h".
 
-The example below can be found in the `examples` directory.
+The example below can be found in the `examples` directory. Your JSX can use either `{}` or `${}` delimiters.
 
 ```html
 <html>
