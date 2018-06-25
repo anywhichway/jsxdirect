@@ -32,7 +32,11 @@ jsx.compile({env:"preact"});
 
 </head>
 <body>
-
+<div id="directions">
+	<p>View the source to see how this page works to compile JSX on the fly in the browser.</p>
+	<p>Below is the dynamically generated compiled render function for this directions div.</p>
+</div>
+<div id="compiled"></div>
 <div id="clock"></div>
 <div id="hello"></div>
 <div id="cool"></div>
@@ -47,6 +51,9 @@ preact.render(jsx(
 		</div>`,{env:"preact"}),document.getElementById("hello"));
 		
 preact.render(jsx.compile({env:"preact"},"function() { return(<div>Pretty cool, huh?</div>) }")(),document.getElementById("cool"));
+	
+const compiled = jsx.compile({env:"preact"},"function() { return(jsx(document.body.getElementById('directions').innerHTML)) }");
+document.getElementById("compiled").innerText = compiled+"";
 </script>
 
 </body>
