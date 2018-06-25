@@ -2,7 +2,7 @@
 
 A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML.
 
-# usage
+# Usage
 
 1) Load your front-end library that uses a virtual DOM.
 2) Ensure you have an "h" function available as a property on an object, e.g. `preact.h`.
@@ -56,6 +56,14 @@ preact.render(jsx.compile({env:"preact"},"function() { return(<div>Pretty cool, 
 Or, as you can see above, wrap JSX in `jsx(<jsx string>,<options>)` and pass it directly to a VDOM consumer.
 
 Or, compile functions containing JSX using `jsx.compile(<options>,<function definition string>)`, and pass the result of invoking them to a VDOM consumer.
+
+# Credits
+
+The JSX parser is based on the work of @stolksdorf.
+
+# License
+
+MIT
 
 # Release History (reverse chronological order)
 
