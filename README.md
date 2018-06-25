@@ -9,7 +9,7 @@ A browser based JSX transpiler supporting entire script blocks, functions, and s
 3) Define your functions in script blocks of type "text/jsx".
 4) Compile your script blocks using `jsx.compile` and pass in the variable name associated with the object supporting "h".
 
-The example below can be found in the `examples` directory. Your JSX can use either `{}` or `${}` delimiters.
+The example below can be found in the `examples` directory. You can also <a href="https://anywhichway.github.io/jsxdirect/examples/preact.html" target="_blank">try it out</a>. Your JSX can use either `{}` or `${}` delimiters.
 
 ```html
 <html>
