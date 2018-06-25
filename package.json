@@ -1,0 +1,26 @@
+{
+  "name": "jsxdirect",
+  "version": "0.0.1",
+  "description": "A browser based JSX transpiler",
+  "engines": {
+    
+  },
+  "license": "MIT",
+  "scripts": {
+  	"prepare": "cp index.js jsxdirect.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anywhichway/jsxdirect.git"
+  },
+  "keywords": ["jsx","transpile","translate"],
+  "author": "Simon Y. Blackwell <syblackwell@anywhichway.com> (http://www.github.com/anywhichway)",
+  "bugs": {
+    "url": "https://github.com/anywhichway/jsxdirect/issues"
+  },
+  "homepage": "https://github.com/anywhichway/jsxdirects#readme",
+  "devDependencies": {},
+  "dependencies": {
+    
+  }
+}
