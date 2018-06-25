@@ -1,6 +1,6 @@
 # jsxdirect
 
-A browser based JSX transpiler
+A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML.
 
 # usage
 
