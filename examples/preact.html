@@ -38,7 +38,7 @@ preact.render(jsx(
 		
 preact.render(jsx.compile({env:"preact"},"function() { return(<div>Pretty cool, huh?</div>) }")(),document.getElementById("cool"));
 	
-const compiled = jsx.compile({env:"preact"},"function() { return(jsx(document.body.getElementById("directions").innerHTML)) }");
+const compiled = jsx.compile({env:"preact"},"function() { return(jsx(document.body.getElementById('directions').innerHTML)) }");
 document.body.getElementById("compiled").innerText = compiled+"";
 </script>
 
