@@ -1,4 +1,4 @@
-# jsxdirect
+# jsxdirect v0.0.2
 
 A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML. You can also use string literal format `${}` instead of `{}` and compile DOM nodes and their children into render functions.
 
@@ -92,5 +92,7 @@ The JSX parser is based on the work of @stolksdorf.
 MIT
 
 # Release History (reverse chronological order)
+
+2018-06-27 v0.0.2 Documentation and example enhancements
 
 2018-06-25 v0.0.1 Initial public release
