@@ -83,11 +83,9 @@ Or, as you can see above, wrap JSX in `jsx(<jsx string>,<options>)` and pass it 
 
 Or, compile functions containing JSX using `jsx.compile(<options>,<function definition string>)`, and pass the result of invoking them to a VDOM consumer.
 
-Also, since `React` is the dominant UI library, it is the default if no `env` property is provided to `jsx.compile`. And, `React.createElement` is automatically mapped to `h`.
-
 # API
 
-`jsx(\`<jsx code>\`)` - converts the `<jsx code>` to a VDOM.
+`jsx('<jsx code>')` - converts the `<jsx code>` to a VDOM.
 
 `jsx.compile([options:object,][toCompile:string|...toCompile:HTMLScriptElements)` - 
 
