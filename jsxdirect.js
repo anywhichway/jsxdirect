@@ -1,6 +1,6 @@
 (function() {
 	/* tokenizer and parser
-	Copyright 2017 stolksdorf, 2018 anywhichway
+	Copyright 2017 stolksdorf, 2018 AnyWhichWay, LLC
 
 	Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is
 	hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
@@ -12,7 +12,7 @@
 	OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 	*/
 	/* all other code
-	Copyright 2018 anywhichway
+	Copyright 2018 AnyWhichWay, LLC
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 	documentation files (the "Software"), to deal in the Software without restriction, including without limitation
@@ -164,22 +164,12 @@
 		return tokens;
 	}
 
-	const parse = (tokens, opts)=>{
+	const parse = (tokens,options)=>{
 		let nodes = [];
 		let current = 0;
 		let token = tokens[current];
 		
-		opts = Object.assign({},opts);
-		if(opts.env==="react") {
-			opts.tagName="type";
-			opts.attributeName="props";
-		} else if(opts.env==="preact") {
-			opts.tagName="nodeName";
-			opts.attributeName="attributes";
-			opts.useEval = true;
-		}
-		opts.tagName || (opts.tagName="type");
-		opts.attributeName || (opts.attributeName="props");
+		options = Object.assign({useEval:true},options);
 
 		const parseProps = ()=>{
 			let props = {};
@@ -197,7 +187,7 @@
 						key = last;
 						last = null;
 					}else if(key && token.type == 'code'){
-						if(opts.useEval){
+						if(options.useEval){
 							props[key] = eval(`(()=>{ return ${token.value}})()`);
 						}else{
 							props[key] = token.value;
@@ -220,11 +210,10 @@
 
 		const genNode = (tagType)=>{
 			token = tokens[++current];
-			return {
-				[opts.tagName] : tagType,
-				[opts.attributeName] : parseProps(),
-				children : getChildren(tagType)
-			};
+			const props = parseProps();
+			if(options.env==="React" && !props.key) props.key = props.id || (Math.random()+"").substring(2);
+			const node = options.h(tagType,props,getChildren(tagType));
+			return node;
 		};
 
 		const getChildren = (tagType)=>{
@@ -301,23 +290,51 @@
 		}
 		return txt;
 	}
-	const jsx = (string,opts={env:(typeof(preact)!=="undefined" ? "preact" : "react")}) => parse(tokenize(string),opts);
-	jsx.compile = (options={},...scripts) => {
+	const H = (nodeName,attributes={},...children) => {
+		const vnode = {nodeName,attributes};
+		if(children.length===1) {
+			if(Array.isArray(children[0])) children = children[0];
+			else children = [children[0]];
+		}
+		vnode.children = children;
+		return vnode;
+	}
+	let h = H,
+		env;
+	if(typeof(React)!=="undefined") { env = "React"; React.h = React.createElement; }
+	else if(typeof(preact)!=="undefined") { env = "preact"; }
+	else if(typeof(hyperapp)!=="undefined") { env = "hyperapp"; }
+	const jsx = (string,options={}) => {
+		options = Object.assign({},options);
+		if(!options.env) options.env = env;
+		if(!options.h) options.h = Function("return " + options.env + ".h")() || H;
+		return parse(tokenize(string),options);
+	}
+	jsx.compile = (options,...scripts) => {
+		const type = typeof(options);
+		if(type==="string" || (options && type==="object" && options instanceof HTMLElement)) {
+			scripts.unshift(options);
+			options = {};
+		} else {
+			options = Object.assign({},options);
+		}
+		if(!options.env) options.env = env;
+		if(!options.h) options.h = Function("return " + options.env + ".h")() || H;
 		if(typeof(document)==="undefined") document = options.document;
 		if(scripts.length===0) {
 			scripts = document.querySelectorAll("[type='text/jsx']");
 		}
 		if(scripts.length===1 && typeof(scripts[0])==="string") {
-			const vdom = jsx(scripts[0],{env:"preact"}), // always use preact env for this;
+			const vdom = jsx(scripts[0],{h:H}), // always use default h;
 				script = toScript(vdom,options);
 			return Function("return " + script)();
 		}
 		scripts.forEach(el => {
-			const vdom = jsx(el.innerHTML,{env:"preact"}), // always use preact env for this;
+			const vdom = jsx(el.innerHTML,{h:H}), // always use default h;
 				script = toScript(vdom,options),
 				node = document.createElement("script");
 			for(const attr of [].slice.call(el.attributes)) node.setAttribute(attr.name,el.attributes[attr.name]);
-			node.type = type="text/javascript";
+			node.type = "text/javascript";
 			node.innerHTML = script;
 			el.parentElement.replaceChild(node,el);
 		});
