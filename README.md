@@ -1,12 +1,15 @@
-# jsxdirect v0.0.3
+# jsxdirect v0.0.4
 
 A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML. You can also use string literal format `${}` instead of `{}` and compile DOM nodes and their children into render functions.
 
 # Usage
 
 1) Load `preact`,`react` or `hyperapp` (Other virtual DOM renderers are supported through options, see API section).
+
 2) Define your functions in script blocks of type "text/jsx".
+
 3) Compile your script blocks using `jsx.compile`.
+
 4) Render your UI.
 
 The example below can be found in the `examples/react.html`. You can also <a href="https://anywhichway.github.io/jsxdirect/examples/react.html" target="_blank">try it out</a>. Your JSX can use either `{}` or `${}` delimiters. The same examples exist in `preact.html` and `hyperapp.html`.
@@ -107,6 +110,8 @@ The JSX parser is based on the work of @stolksdorf.
 MIT
 
 # Release History (reverse chronological order)
+
+2018-06-28 v0.0.4 Documentation updates.
 
 2018-06-28 v0.0.3 Auto-config for `React` and `preact`. `hyperapp` support.
 
