@@ -1,4 +1,4 @@
-# jsxdirect v0.0.4
+# jsxdirect v0.0.5
 
 A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML. You can also use string literal format `${}` instead of `{}` and compile DOM nodes and their children into render functions.
 
@@ -101,15 +101,14 @@ Or, compile functions containing JSX using `jsx.compile(<options>,<function defi
   4) If no arguments are provided, the document is searched for scripts of type `text/jsx` and they are all compiled.
 
 
-# Credits
-
-The JSX parser is based on the work of @stolksdorf.
 
 # License
 
 MIT
 
 # Release History (reverse chronological order)
+
+2018-07-03 v0.0.5 Removed @stolksdorf parser. Reduced minimized and gzipped size from 1.8K to 1.1K.
 
 2018-06-28 v0.0.4 Documentation updates.
 

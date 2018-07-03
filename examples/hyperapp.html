@@ -43,19 +43,17 @@ hyperapp.app({},{},Clock,document.getElementById("clock"));
 hyperapp.app({},{},() => 
 		jsx(`<div id='foo'>
 				<span> Hello, world! </span>
-				<button onclick={ e => alert('hi!') }>Click Me</button>
+				<button onclick="e => alert('hi!')">Click Me</button>
 				</div>`)
 		,document.getElementById("hello"));
 		
 hyperapp.app({},{},jsx.compile("function() { return(<div>Pretty cool, huh?</div>) }")(),document.getElementById("cool"));
 	
-const compiled = jsx.compile("function() { return jsx(document.getElementById('directions').innerHTML) }");
+const compiled = jsx(document.getElementById('directions').outerHTML);
 
-document.getElementById("compiled").innerText = compiled+"";
+document.getElementById("vdom").innerText = JSON.stringify(compiled);
 
-document.getElementById("vdom").innerText = JSON.stringify({nodeName:"div",attributes:{},children:compiled()});
-
-hyperapp.app({},{},() => ({nodeName:"div",attributes:{},children:compiled()}),document.getElementById("repeat"));
+hyperapp.app({},{},() => compiled,document.getElementById("repeat"));
 
 </script>
 
