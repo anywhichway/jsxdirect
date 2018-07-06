@@ -20,9 +20,15 @@
 			if(value.lastIndexOf("=>")===value.length-2) return true;
 			return false;
 		},
-		transformAttributes = string => string,
+		replaceAll = (string,regExp,replacement) => {
+			const newstr = string.replace(regExp,replacement);
+			if(newstr===string) return string;
+			return replaceAll(newstr,regExp,replacement);
+		}
+		transformAttributes = string => replaceAll(replaceAll(string,/(<.*?)=(\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),/(<.*?)=(\$\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),
 		JSXTranspile = (string,options={}) => {
 			const div = document.createElement("div");
+			// replace ={...} with ="{...}"
 			div.innerHTML = transformAttributes(string);
 			div.normalize();
 			return JSXTranspileNode(div,options);
@@ -44,19 +50,23 @@
 					}
 				} else {
 					const attributes = [].slice.call(child.attributes).reduce((txt,attribute,index,array) => {
-						let aname = attribute.name;
-						const value = attribute.value.trim();
+						let aname = attribute.name,
+							value = attribute.value.trim();
 						if(options.env==="React" && aname[0]==="o" && aname[1]==="n") {
 							aname = "on" + aname[2].toUpperCase() + aname.substring(3);
 						}
 						txt += `"${aname}":`;
+						if(value.includes("{")) {
+							value = value.replace(/\{/g,"${");
+						}
 						if((value[0]==="{" || (value[0]==="$" && value[1]==="{")) && value[value.length-1]==="}") {
 							txt += value.substring(value[0]==="$" ? 2 : 1,value.length-1);
 						} else if(aname[0]==="o" && aname[1]==="n") {
 							txt += attribute.value;
 						} else {
-							txt += JSON.stringify(attribute.value);
+							txt += "\`" + value + "\`";
 						}
+						//txt += "\`" + value + "\`";
 						if(index<array.length-1) txt += ",";
 						return txt;
 					},"");

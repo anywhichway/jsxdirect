@@ -1,4 +1,4 @@
-# jsxdirect v0.0.5
+# jsxdirect v0.0.6
 
 A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML. You can also use string literal format `${}` instead of `{}` and compile DOM nodes and their children into render functions.
 
@@ -63,7 +63,7 @@ ReactDOM.render(new Clock().render(),document.getElementById("clock"));
 ReactDOM.render(jsx(
 		`<div id='foo'>
 		<span> Hello, world! </span>
-		<button onClick={ e => alert('hi!') }>Click Me</button>
+		<button onclick={ e => alert('hi!') }>Click Me</button>
 		</div>`),document.getElementById("hello"));
 		
 ReactDOM.render(jsx.compile("function() { return(<div>Pretty cool, huh?</div>) }")(),document.getElementById("cool"));
@@ -86,6 +86,16 @@ Or, as you can see above, wrap JSX in `jsx(<jsx string>,<options>)` and pass it 
 
 Or, compile functions containing JSX using `jsx.compile(<options>,<function definition string>)`, and pass the result of invoking them to a VDOM consumer.
 
+# Differences From Standard JSX
+
+`jsxdirect` should parse all standard JSX. It also supports the following:
+
+1) The use of `${...}` in place of `{...}`
+
+2) Quoting of templates inside of attribute values, e.g. `<div style="display:block;float:{floatDirection}"></div>`
+
+3) Automatic correction of `class=<value>` to `className=<value>` for React.
+
 # API
 
 `jsx('<jsx code>')` - converts the `<jsx code>` to a VDOM.
@@ -94,12 +104,11 @@ Or, compile functions containing JSX using `jsx.compile(<options>,<function defi
 
   1) If `options` is not provided, it is infered from the local environment by looking for `preact`, `React`, `hyperapp` etc. The shape of options is `{env:string}`, where `env` is a string that is the same as the variable associated with an object having an `h` function, e.g. `"preact"`. `React` is automatically patched to have `h` equal `createElement`.
   
-  2) If a string is provided to compile, only one can be provided. A function that returns a VDOM is then returned by `jsx.compile`.
+  2) If a string is provided to compile, only one can be provided. A function that returns a VDOM is then returned.
   
   3) If one or more `HTMLScriptElement` are provided, each is compiled. Script elements can contain regular JSX, there is no need to use `jsx(\`<jsx code>`)`.
   
   4) If no arguments are provided, the document is searched for scripts of type `text/jsx` and they are all compiled.
-
 
 
 # License
@@ -108,7 +117,7 @@ MIT
 
 # Release History (reverse chronological order)
 
-2018-07-03 v0.0.5 Removed @stolksdorf parser. Reduced minimized and gzipped size from 1.8K to 1.1K.
+2018-07-06 v0.0.6 Removed @stolksdorf parser. Reduced minimized and gzipped size from 1.8K to 1.2K.
 
 2018-06-28 v0.0.4 Documentation updates.
 
