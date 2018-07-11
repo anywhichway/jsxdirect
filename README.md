@@ -1,4 +1,4 @@
-# jsxdirect v0.0.6
+# jsxdirect v0.0.7
 
 A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML. You can also use string literal format `${}` instead of `{}` and compile DOM nodes and their children into render functions.
 
@@ -90,11 +90,9 @@ Or, compile functions containing JSX using `jsx.compile(<options>,<function defi
 
 `jsxdirect` should parse all standard JSX. It also supports the following:
 
-1) The use of `${...}` in place of `{...}`
+1) 1) Access to variables inside quoted values via template literal notation, e.g. `<input value={myvalue}>` = `<input value="${myvalue}}">`. This allows for complex resolution like this: `<input value="display:block;float:${floatDirection ? floatDirection : 'normal'}"></div>`.
 
-2) Quoting of templates inside of attribute values, e.g. `<div style="display:block;float:{floatDirection}"></div>`
-
-3) Automatic correction of `class=<value>` to `className=<value>` for React.
+2) Automatic correction of `class=<value>` to `className=<value>` for React.
 
 # API
 
@@ -116,6 +114,8 @@ Or, compile functions containing JSX using `jsx.compile(<options>,<function defi
 MIT
 
 # Release History (reverse chronological order)
+
+2018-07-10 v0.0.7 Improved event handler, e.g. onclick, parsing. Adjusted `${` so resolved variables when embedded in string and `{` when not.
 
 2018-07-06 v0.0.6 Removed @stolksdorf parser. Reduced minimized and gzipped size from 1.8K to 1.2K.
 

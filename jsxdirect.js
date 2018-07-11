@@ -20,12 +20,13 @@
 			if(value.lastIndexOf("=>")===value.length-2) return true;
 			return false;
 		},
+		isFunction = value => value.match(/\(*function.*\(.*\)/) || value.match(/(\((?:\w+,)*\w+\)|\(\)|\w+)[\r\t ]*=>\s*/);
 		replaceAll = (string,regExp,replacement) => {
 			const newstr = string.replace(regExp,replacement);
 			if(newstr===string) return string;
 			return replaceAll(newstr,regExp,replacement);
 		}
-		transformAttributes = string => replaceAll(replaceAll(string,/(<.*?)=(\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),/(<.*?)=(\$\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),
+		transformAttributes = string => replaceAll(replaceAll(string,/(<.*?)=(\{.*?\})(.*?>)/g,"$1=\"$$$2\"$3"),/(<.*?)=(\$\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),
 		JSXTranspile = (string,options={}) => {
 			const div = document.createElement("div");
 			// replace ={...} with ="{...}"
@@ -56,17 +57,20 @@
 							aname = "on" + aname[2].toUpperCase() + aname.substring(3);
 						}
 						txt += `"${aname}":`;
-						if(value.includes("{")) {
-							value = value.replace(/\{/g,"${");
-						}
-						if((value[0]==="{" || (value[0]==="$" && value[1]==="{")) && value[value.length-1]==="}") {
-							txt += value.substring(value[0]==="$" ? 2 : 1,value.length-1);
-						} else if(aname[0]==="o" && aname[1]==="n") {
-							txt += attribute.value;
+						//if(value.includes("{")) {
+						//	value = value.replace(/(?<!$)\{/g,"${"); //
+						//}
+						//if((value[0]==="{" || (value[0]==="$" && value[1]==="{")) && value[value.length-1]==="}") {
+						//	txt += value.substring(value[0]==="$" ? 2 : 1,value.length-1);
+						//} else 
+						if(aname[0]==="o" && aname[1]==="n" && !value.includes("${") && isFunction(value)) {
+							txt +=  value;
+							//txt += "(value => { const original = value; if(!jsx.isFunction(value)) { return value; };try { value = Function('return ' + value)() } catch(e) { }; return typeof(value)==='function' ? value : original; })(`" + value + "`)";
 						} else {
-							txt += "\`" + value + "\`";
+						//	txt += JSON.stringify(attribute.value);
+						//}
+							txt += "`" + value + "`";
 						}
-						//txt += "\`" + value + "\`";
 						if(index<array.length-1) txt += ",";
 						return txt;
 					},"");
@@ -88,14 +92,14 @@
 			return vnode;
 		};
 	let h = H,
-		env;
+		env = "jsx";
 	if(typeof(React)!=="undefined") { env = "React"; React.h = React.createElement; }
 	else if(typeof(preact)!=="undefined") { env = "preact"; }
 	else if(typeof(hyperapp)!=="undefined") { env = "hyperapp"; }
 	const jsx = (string,options={}) => {
 		options = Object.assign({},options);
 		if(!options.env) options.env = env;
-		if(!options.h) options.h = options.env ? Function("return " + options.env + ".h")() : H;
+		if(!options.h) options.h = Function("return " + options.env + ".h")();
 		return Function("return " + JSXTranspile(string,options))();
 	}
 	jsx.compile = (options,...scripts) => {
@@ -123,6 +127,8 @@
 			el.parentElement.replaceChild(node,el);
 		});
 	}
+	jsx.h = H;
+	jsx.isFunction = isFunction;
 	if(typeof(module)!=="undefined") module.exports = jsx;
 	if(typeof(window)!=="undefined") { (window.jsx || (window.jsx = jsx)); window.jsxdirect = jsx; };
 }).call(this);
