@@ -46,7 +46,7 @@ ReactDOM.render(new Clock().render(),document.getElementById("clock"));
 ReactDOM.render(jsx(
 		`<div id='foo'>
 		<span> Hello, world! </span>
-		<button onClick="e => alert('hi!')">Click Me</button>
+		<button onClick="{e => alert('hi!')}">Click Me</button>
 		</div>`),document.getElementById("hello"));
 		
 ReactDOM.render(jsx.compile("function() { return(<div>Pretty cool, huh?</div>) }")(),document.getElementById("cool"));

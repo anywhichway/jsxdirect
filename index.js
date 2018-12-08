@@ -60,10 +60,9 @@
 						//if(value.includes("{")) {
 						//	value = value.replace(/(?<!$)\{/g,"${"); //
 						//}
-						//if((value[0]==="{" || (value[0]==="$" && value[1]==="{")) && value[value.length-1]==="}") {
-						//	txt += value.substring(value[0]==="$" ? 2 : 1,value.length-1);
-						//} else 
-						if(aname[0]==="o" && aname[1]==="n" && !value.includes("${") && isFunction(value)) {
+						if((value[0]==="{" || (value[0]==="$" && value[1]==="{")) && value[value.length-1]==="}") {
+							txt += value.substring(value[0]==="$" ? 2 : 1,value.length-1);
+						} else if(aname[0]==="o" && aname[1]==="n" && !value.includes("${") && isFunction(value)) {
 							txt +=  value;
 							//txt += "(value => { const original = value; if(!jsx.isFunction(value)) { return value; };try { value = Function('return ' + value)() } catch(e) { }; return typeof(value)==='function' ? value : original; })(`" + value + "`)";
 						} else {
