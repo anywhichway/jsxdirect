@@ -1,4 +1,5 @@
 (function() {
+	"use strict"
 	/* Copyright 2018 AnyWhichWay, LLC
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -20,12 +21,15 @@
 			if(value.lastIndexOf("=>")===value.length-2) return true;
 			return false;
 		},
-		isFunction = value => value.match(/\(*function.*\(.*\)/) || value.match(/(\((?:\w+,)*\w+\)|\(\)|\w+)[\r\t ]*=>\s*/);
+		isFunction = value => value.match(/\(*function.*\(.*\)/) || value.match(/(\((?:\w+,)*\w+\)|\(\)|\w+)[\r\t ]*=>\s*/),
 		replaceAll = (string,regExp,replacement) => {
 			const newstr = string.replace(regExp,replacement);
 			if(newstr===string) return string;
 			return replaceAll(newstr,regExp,replacement);
-		}
+		},
+		resolve = (string,__jsx__,context={}) => {
+			return Function("__jsx__","context","with(context) { return `" + string + "`; }")(__jsx__,context);
+		},
 		transformAttributes = string => replaceAll(replaceAll(string,/(<.*?)=(\{.*?\})(.*?>)/g,"$1=\"$$$2\"$3"),/(<.*?)=(\$\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),
 		JSXTranspile = (string,options={}) => {
 			const div = document.createElement("div");
@@ -41,13 +45,13 @@
 				if(child instanceof Text) {
 					const value = child.textContent.trim();
 					if((value[0]==="{" || (value[0]==="$" && value[1]==="{")) && value[value.length-1]==="}") {
-						txt += `${value.substring(value[0]==="$" ? 2 : 1,value.length-1)}${incode ? "" : ","}`;
+						txt += resolve('${__jsx__.value.substring(__jsx__.value[0]==="$" ? 2 : 1,__jsx__.value.length-1)}${__jsx__.incode ? "" : ","}',{value,incode},options.ctx);
 					} else if(isCode(value) || (array.length>2 && (value[value.length-1]==="(" || incode))) {
 						if(value[value.length-1]===")") incode--;
 						else incode++;
-						txt += `${child.textContent}${incode ? "" : ","}`;
+						txt += resolve('${__jsx__.child.textContent}${__jsx__.incode ? "" : ","}',{child,incode},options.ctx);
 					} else if(value.length>0) {
-						txt += `\"${child.textContent.replace(/\n/g,"")}\"${incode ? "" : ","}`;
+						txt += '"' + resolve('${__jsx__.child.textContent.replace(/\\n/g,"")}',{child},options.ctx) + '"' + resolve('${__jsx__.incode ? "" : ","}',{incode},options.ctx);
 					}
 				} else {
 					const attributes = [].slice.call(child.attributes).reduce((txt,attribute,index,array) => {
@@ -75,7 +79,7 @@
 					},"");
 					let cnodes = JSXTranspileNode(child,options,node);
 					if(cnodes[cnodes.length-1]===",") cnodes = cnodes.substring(0,cnodes.length-1);
-					txt += `${options.env ? options.env+".h" : "h"}("${child.tagName.toLowerCase()}",{${attributes}},[].concat(${cnodes}))${incode ? "" : ","}`;
+					txt += resolve('${__jsx__.options.env ? __jsx__.options.env+".h" : "h"}("${__jsx__.child.tagName.toLowerCase()}",{${__jsx__.attributes}},[].concat(${__jsx__.cnodes}))${__jsx__.incode ? "" : ","}',{child,incode,options,attributes,cnodes},options.ctx);
 				}
 			})
 			if(txt[txt.length-1]===",") return txt.substring(0,txt.length-1);

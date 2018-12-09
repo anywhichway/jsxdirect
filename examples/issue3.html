@@ -1,0 +1,29 @@
+<html>
+<head>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="../index.js"></script>
+
+<script>
+function Clock() {
+   var count = 0;
+   function clicked() { count++; }
+
+    return jsx(`
+        <div>
+            <button key=1 onClick={()=> clicked()}>hi hi hi ${count}</button>
+        </div>
+    `,{ctx:{clicked,count}});
+}
+</script>
+
+</head>
+<body>
+
+
+<script>
+console.log(Clock())
+</script>
+
+</body>
+</html>

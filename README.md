@@ -96,11 +96,13 @@ Or, compile functions containing JSX using `jsx.compile(<options>,<function defi
 
 # API
 
-`jsx('<jsx code>')` - converts the `<jsx code>` to a VDOM.
+`jsx('<jsx code>',options)` - converts the `<jsx code>` to a VDOM using the provided `options`.
 
 `jsx.compile([options:object,][toCompile:string|...toCompile:HTMLScriptElements)` - 
 
   1) If `options` is not provided, it is infered from the local environment by looking for `preact`, `React`, `hyperapp` etc. The shape of options is `{env:string}`, where `env` is a string that is the same as the variable associated with an object having an `h` function, e.g. `"preact"`. `React` is automatically patched to have `h` equal `createElement`.
+  
+  ALPHA FEATURE: `options` can take an optional property `ctx` that provides context to the compiled JSX.
   
   2) If a string is provided to compile, only one can be provided. A function that returns a VDOM is then returned.
   
@@ -114,6 +116,8 @@ Or, compile functions containing JSX using `jsx.compile(<options>,<function defi
 MIT
 
 # Release History (reverse chronological order)
+
+2018-12-08 v0.0.9 Partial fix for [issue 3](https://github.com/anywhichway/jsxdirect/issues/3).
 
 2018-12-08 v0.0.8 Patched to address [issue 2](https://github.com/anywhichway/jsxdirect/issues/2). Both `onclick="a => alert(a)"` and `onclick="{a => alert(a)}"` now work.
 
