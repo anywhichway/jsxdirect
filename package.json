@@ -1,6 +1,6 @@
 {
   "name": "jsxdirect",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML.",
   "engines": {
     
