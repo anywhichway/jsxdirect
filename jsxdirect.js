@@ -28,7 +28,7 @@
 			return replaceAll(newstr,regExp,replacement);
 		},
 		resolve = (string,__jsx__,context={}) => {
-			return Function("__jsx__","context","with(context) { return `" + string + "`; }")(__jsx__,context);
+			return Function("__global__","__jsx__","context","with(__global__) { with(context) { return `" + string + "`; }}")(this,__jsx__,context);
 		},
 		transformAttributes = string => replaceAll(replaceAll(string,/(<.*?)=(\{.*?\})(.*?>)/g,"$1=\"$$$2\"$3"),/(<.*?)=(\$\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),
 		JSXTranspile = (string,options={}) => {
@@ -79,7 +79,7 @@
 					},"");
 					let cnodes = JSXTranspileNode(child,options,node);
 					if(cnodes[cnodes.length-1]===",") cnodes = cnodes.substring(0,cnodes.length-1);
-					txt += resolve('${__jsx__.options.env ? __jsx__.options.env+".h" : "h"}("${__jsx__.child.tagName.toLowerCase()}",{${__jsx__.attributes}},[].concat(${__jsx__.cnodes}))${__jsx__.incode ? "" : ","}',{child,incode,options,attributes,cnodes},options.ctx);
+					txt += resolve('${__jsx__.options.env ? __jsx__.options.env+".h" : "h"}("${__jsx__.child.tagName}",{${__jsx__.attributes}},[].concat(${__jsx__.cnodes}))${__jsx__.incode ? "" : ","}',{child,incode,options,attributes,cnodes},options.ctx);
 				}
 			})
 			if(txt[txt.length-1]===",") return txt.substring(0,txt.length-1);

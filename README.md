@@ -1,4 +1,4 @@
-# jsxdirect v0.0.10
+# jsxdirect v0.0.11
 
 A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML. You can also use string literal format `${}` instead of `{}` and compile DOM nodes and their children into render functions.
 
@@ -116,6 +116,8 @@ Or, compile functions containing JSX using `jsx.compile(<options>,<function defi
 MIT
 
 # Release History (reverse chronological order)
+
+2018-12-12 v0.0.11 Now passing global scope to `jsxdirect` internal resolution functions.
 
 2018-12-12 v0.0.10 Eliminated lower casing of tag names [issue 4](https://github.com/anywhichway/jsxdirect/issues/4).
 

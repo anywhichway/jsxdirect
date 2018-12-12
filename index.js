@@ -28,7 +28,7 @@
 			return replaceAll(newstr,regExp,replacement);
 		},
 		resolve = (string,__jsx__,context={}) => {
-			return Function("__jsx__","context","with(context) { return `" + string + "`; }")(__jsx__,context);
+			return Function("__global__","__jsx__","context","with(__global__) { with(context) { return `" + string + "`; }}")(this,__jsx__,context);
 		},
 		transformAttributes = string => replaceAll(replaceAll(string,/(<.*?)=(\{.*?\})(.*?>)/g,"$1=\"$$$2\"$3"),/(<.*?)=(\$\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),
 		JSXTranspile = (string,options={}) => {
