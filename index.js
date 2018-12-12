@@ -79,7 +79,7 @@
 					},"");
 					let cnodes = JSXTranspileNode(child,options,node);
 					if(cnodes[cnodes.length-1]===",") cnodes = cnodes.substring(0,cnodes.length-1);
-					txt += resolve('${__jsx__.options.env ? __jsx__.options.env+".h" : "h"}("${__jsx__.child.tagName.toLowerCase()}",{${__jsx__.attributes}},[].concat(${__jsx__.cnodes}))${__jsx__.incode ? "" : ","}',{child,incode,options,attributes,cnodes},options.ctx);
+					txt += resolve('${__jsx__.options.env ? __jsx__.options.env+".h" : "h"}("${__jsx__.child.tagName}",{${__jsx__.attributes}},[].concat(${__jsx__.cnodes}))${__jsx__.incode ? "" : ","}',{child,incode,options,attributes,cnodes},options.ctx);
 				}
 			})
 			if(txt[txt.length-1]===",") return txt.substring(0,txt.length-1);
