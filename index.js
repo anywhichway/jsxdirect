@@ -32,11 +32,10 @@
 		},
 		transformAttributes = string => replaceAll(replaceAll(string,/(<.*?)=(\{.*?\})(.*?>)/g,"$1=\"$$$2\"$3"),/(<.*?)=(\$\{.*?\})(.*?>)/g,"$1=\"$2\"$3"),
 		JSXTranspile = (string,options={}) => {
-			const div = document.createElement("div");
-			// replace ={...} with ="{...}"
-			div.innerHTML = transformAttributes(string);
-			div.normalize();
-			return JSXTranspileNode(div,options);
+			string = transformAttributes(string);
+			const el = new DOMParser().parseFromString(string,"text/html");
+			el.normalize();
+			return JSXTranspileNode(el.body,options);
 		},
 		JSXTranspileNode = (node,options={},parent,txt="") => { // perhaps parent should be "incode"?
 			const children = [].slice.call(node.childNodes);
