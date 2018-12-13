@@ -1,4 +1,4 @@
-# jsxdirect v0.0.11
+# jsxdirect v0.0.12
 
 A browser based JSX transpiler supporting entire script blocks, functions, and simple HTML. You can also use string literal format `${}` instead of `{}` and compile DOM nodes and their children into render functions.
 
