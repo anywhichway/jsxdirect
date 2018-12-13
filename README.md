@@ -90,7 +90,7 @@ Or, compile functions containing JSX using `jsx.compile(<options>,<function defi
 
 `jsxdirect` does not support case sensitive tags. Unfortunately, this dramatically reduces its utility with React when there are case sensitive tags. By specification HTML tags are
 not case sensitive and during its processing `jsxdirect` must use either `innerHTML` or `new DOMParser().parseFromString(string,"text/html")`. In both cases, 
-tags get uppercased into the `tagName` property of elements and lowercased  into the `localName`. This means that React components must use all CAPS for their names. This is also one of the reasons that the industry spec for Custom Elements uses hyphentated tags and a separate process of registering tags names to be associated with custom elements.
+tags get uppercased into the `tagName` property of elements and lowercased  into the `localName`. This means that React components must use all CAPS for their names. This is also one of the reasons that the industry spec for Custom Elements uses hyphenated tags and a separate process of registering tags names to be associated with custom elements.
 
 `jsxdirect` should parse all other standard JSX. It also supports the following:
 
